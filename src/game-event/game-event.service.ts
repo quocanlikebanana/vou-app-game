@@ -9,11 +9,11 @@ export class GameEventService {
         private readonly prismaService: PrismaService,
     ) { }
 
-    async createGamesOfEvent(createGameOfEventParams: CreateGameOfEventParam[]) {
+    async createGamesOfEvent(createGameOfEventParams: CreateGameOfEventParam[]): Promise<{ ids: string[] }> {
         if (createGameOfEventParams.length === 0) {
             throw new DomainError('No games provided for event');
         }
-        await this.prismaService.gameOfEvent.createMany({
+        const res = await this.prismaService.gameOfEvent.createManyAndReturn({
             data: createGameOfEventParams.map(param => ({
                 eventId: param.eventId,
                 gameId: param.gameId,
@@ -23,6 +23,7 @@ export class GameEventService {
                 image: param.image,
             })),
         });
+        return { ids: res.map(r => r.id) };
     }
 
     async updateGameOfEvent(updateGameOfEventParam: UpdateGameOfEventParam) {
@@ -51,7 +52,7 @@ export class GameEventService {
         return this.prismaService.gameOfEvent.findMany({
             where: {
                 eventId: eventId || undefined,
-                gameId: (filterGame.length === 0 || filterGame == null) ? undefined : {
+                gameId: filterGame && (filterGame.length === 0 || filterGame == null) ? undefined : {
                     in: filterGame,
                 },
                 name: (searchName === '' || searchName == null) ? undefined : {

@@ -4,7 +4,6 @@ import { ValidationPipe, BadRequestException } from '@nestjs/common';
 import { CatchEverythingFilter } from './common/error/all-exception.filter';
 import { validationExceptionFactory } from './common/error/validation.handle.error';
 
-
 async function bootstrap() {
 	const port = process.env.PORT ?? 3000;
 	const host = process.env.HOST ?? 'localhost';
@@ -19,7 +18,7 @@ async function bootstrap() {
 		exceptionFactory: validationExceptionFactory,
 	}));
 
-	await app.listen(port, host);
+	await app.listen(port);
 	console.log(`[Game Service] is running on: ${await app.getUrl()}`);
 }
 bootstrap();

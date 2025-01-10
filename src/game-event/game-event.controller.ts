@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { GameEventService } from './game-event.service';
-import { CreateGameOfEventParam, DeleteGamesOfEventParam, UpdateGameOfEventParam } from './dto/param';
+import { CreateGameOfEventParam, DeleteGamesOfEventParam, QueryGameOfEventParam, UpdateGameOfEventParam } from './dto/param';
 
 @Controller('game-event')
 export class GameEventController {
@@ -9,7 +9,7 @@ export class GameEventController {
     ) { }
 
     @Post('createmany')
-    async createGamesOfEvent(@Body() body: CreateGameOfEventParam[]): Promise<void> {
+    async createGamesOfEvent(@Body() body: CreateGameOfEventParam[]): Promise<{ ids: string[] }> {
         return await this.gameEventService.createGamesOfEvent(body);
     }
 
@@ -23,4 +23,8 @@ export class GameEventController {
         return await this.gameEventService.deleteGamesOfEvent(body);
     }
 
+    @Get('query')
+    async queryGamesOfEvent(@Param() queryParam: QueryGameOfEventParam) {
+        return await this.gameEventService.queryGamesOfEvent(queryParam);
+    }
 }
