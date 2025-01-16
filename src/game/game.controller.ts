@@ -9,27 +9,27 @@ export class GameController {
         private readonly gameService: GameService
     ) { }
 
-    @Post('/create')
+    @Post('/admin/create')
     async createGame(@Body() body: CreateGameParam): Promise<{ id: string }> {
         return await this.gameService.createGame(body);
     }
 
-    @Post('/update')
+    @Post('/admin/update')
     async updateGame(@Body() body: UpdateGameParam): Promise<void> {
         return await this.gameService.updateGame(body);
     }
 
-    @Post('/delete')
+    @Post('/admin/delete')
     async deleteGame(@Body() body: DeleteGameParam): Promise<void> {
         return await this.gameService.deleteGame(body);
     }
 
-    @Get('/all')
+    @Get('/unauth/all')
     async getAll(): Promise<GamePresenter[]> {
         return await this.gameService.getAll();
     }
 
-    @Get('/:id')
+    @Get('/unauth/:id')
     async getById(@Param('id') id: string): Promise<GamePresenter> {
         return await this.gameService.getById(id);
     }

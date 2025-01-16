@@ -12,7 +12,7 @@ export class CreateGameOfEventParam {
     readonly name: string;
 
     @IsString()
-    readonly descritpion: string;
+    readonly description: string;
 
     @IsString()
     readonly guide: string;

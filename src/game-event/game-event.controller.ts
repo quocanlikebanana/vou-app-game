@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { GameEventService } from './game-event.service';
 import { CreateGameOfEventParam, DeleteGamesOfEventParam, QueryGameOfEventParam, UpdateGameOfEventParam } from './dto/param';
 
@@ -8,23 +8,33 @@ export class GameEventController {
         private readonly gameEventService: GameEventService
     ) { }
 
-    @Post('createmany')
+    @Post('/partner/createmany')
     async createGamesOfEvent(@Body() body: CreateGameOfEventParam[]): Promise<{ ids: string[] }> {
         return await this.gameEventService.createGamesOfEvent(body);
     }
 
-    @Post('update')
+    @Post('/partner/update')
     async updateGameOfEvent(@Body() body: UpdateGameOfEventParam): Promise<void> {
         return await this.gameEventService.updateGameOfEvent(body);
     }
 
-    @Post('deletemany')
+    @Post('/partner/deletemany')
     async deleteGamesOfEvent(@Body() body: DeleteGamesOfEventParam): Promise<void> {
         return await this.gameEventService.deleteGamesOfEvent(body);
     }
 
-    @Get('query')
-    async queryGamesOfEvent(@Param() queryParam: QueryGameOfEventParam) {
+    @Get('/unauth/query')
+    async queryGamesOfEvent(@Query() queryParam: QueryGameOfEventParam) {
         return await this.gameEventService.queryGamesOfEvent(queryParam);
+    }
+
+    @Get('/unauth/detail/:gameOfEventId')
+    async getGameOfEvent(@Param('gameOfEventId') gameOfEventId: string) {
+        return await this.gameEventService.getGameDetail(gameOfEventId);
+    }
+
+    @Post('/system/reduce-turn')
+    async reduceTurn(@Body() body: { userId: string; gameOfEventId: string; turn: number }) {
+        return await this.gameEventService.reduceTurn(body);
     }
 }

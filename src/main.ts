@@ -18,6 +18,8 @@ async function bootstrap() {
 		exceptionFactory: validationExceptionFactory,
 	}));
 
+	app.enableCors({ origin: '*' });
+
 	await app.listen(port);
 	console.log(`[Game Service] is running on: ${await app.getUrl()}`);
 }
